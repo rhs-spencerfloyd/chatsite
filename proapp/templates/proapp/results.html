@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Spencer's Website</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Spencer's Website</h1>
+        <p>Here are the submitted messages:</p>
+        <div id="messages"></div>
+    </body>
+    <script>
+        
+
+
+        setInterval(function()
+        { 
+            var html = "hello";
+            $.getJSON("{% url 'proapp:getmessages' %}", function(result){
+                html += "hi";
+                $.each(result, function(i, field){
+                    html += "hi";
+                });
+            });
+            document.getElementById("messages").innerHTML = html;
+        }, 1000);//time in milliseconds 
+
+
+    
+    
+    </script>
+</html>

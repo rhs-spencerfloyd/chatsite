@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Spencer's Website</title>
+    </head>
+    <body>
+        <h1>Spencer's Website</h1>
+        <p>Hello! Submit you message here!</p>
+        <form method="post" action="{% url 'proapp:submit' %}">
+            {% csrf_token %}
+           Message <input type="text" placeholder="Message" name="textbox" />
+           <input type="submit" value="LOL" />
+        </form>
+    </body>
+</html>
