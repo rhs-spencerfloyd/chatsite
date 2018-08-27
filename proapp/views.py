@@ -14,15 +14,10 @@ def submit(request):
     post = request.POST.get("textbox")
     message = Message(message_text=post)
     message.save()
-    return HttpResponseRedirect(reverse('proapp:results'))
-
-
-def results(request):
-    messages = Message.objects.all().order_by('-id')
-    return render(request, "proapp/results.html", {"messages": messages})
+    return HttpResponseRedirect(reverse('proapp:index'))
 
 
 def getmessages(request):
-    messages = Message.objects.all().order_by('-id').values("message_text")
+    messages = Message.objects.all().order_by('-id').values("message_text")[:20]
     messlist = list(messages)
     return JsonResponse(messlist, safe=False)

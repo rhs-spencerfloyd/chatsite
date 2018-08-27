@@ -4,11 +4,59 @@
     </head>
     <body>
         <h1>Spencer's Website</h1>
-        <p>Hello! Submit you message here!</p>
+        <p id="messages"></p>
         <form method="post" action="{% url 'proapp:submit' %}">
             {% csrf_token %}
            Message <input type="text" placeholder="Message" name="textbox" />
            <input type="submit" value="LOL" />
         </form>
     </body>
+
+    <script>
+        
+
+        var html = "";
+        var oldhtml = "";
+
+        setInterval(function()
+        { 
+
+            getJSON('{% url "proapp:getmessages" %}',
+            function(err, data) {
+            if (err !== null) {
+                html = "error";
+            } else {
+                oldhtml = html;
+                html = "";
+                data.forEach(function (arrayItem) {
+                    html = "<br>" + arrayItem.message_text + html;
+                });
+            }
+            });
+
+            if (html != oldhtml) {
+                document.getElementById("messages").innerHTML = html;
+            }
+
+
+        }, 250);//time in milliseconds 
+        
+        var getJSON = function(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'json';
+            xhr.onload = function() {
+            var status = xhr.status;
+            if (status === 200) {
+                callback(null, xhr.response);
+            } else {
+                callback(status, xhr.response);
+            }
+            };
+            xhr.send();
+        };
+
+    
+    
+    </script>
 </html>
