@@ -3,11 +3,11 @@
         <title>Spencer's Website</title>
     </head>
     <body>
-        <h1>Spencer's Website</h1>
+        <!--<h1>Spencer's Website</h1>-->
         <p id="messages"></p>
         <form method="post" action="{% url 'proapp:submit' %}">
             {% csrf_token %}
-           Message <input type="text" placeholder="Message" name="textbox" />
+           Message <input type="text" maxlength="200" placeholder="Message" name="textbox" />
            <input type="submit" value="LOL" />
         </form>
     </body>

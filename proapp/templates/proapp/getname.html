@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Spencer's Website</title>
+    </head>
+    <body>
+        <h1>Enter your name</h1>
+        <h5>Your IP is {{ ip }}</h5>
+        <form method="post" action="{% url 'proapp:setname' %}">
+            {% csrf_token %}
+           Name <input type="text" maxlength="20" placeholder="Your Name" name="namebox" />
+           <input type="submit" value="Set" />
+        </form>
+    </body>
+</html>
