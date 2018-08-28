@@ -3,7 +3,6 @@
         <title>Spencer's Website</title>
     </head>
     <body>
-        <!--<h1>Spencer's Website</h1>-->
         <p id="messages"></p>
         <form method="post" action="{% url 'proapp:submit' %}">
             {% csrf_token %}
@@ -17,7 +16,7 @@
 
         var html = "";
         var oldhtml = "";
-
+        
         setInterval(function()
         { 
 

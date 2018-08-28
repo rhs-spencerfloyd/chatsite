@@ -32,9 +32,10 @@ def index(request):
 
 def submit(request):
     post = request.POST.get("textbox")
-    ip = get_client_ip(request)
-    message = Message(message_text=escape(post), ip=ip)
-    message.save()
+    if post != "":
+        ip = get_client_ip(request)
+        message = Message(message_text=escape(post), ip=ip)
+        message.save()
     return HttpResponseRedirect(reverse('proapp:index'))
 
 
