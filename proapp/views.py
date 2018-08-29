@@ -36,6 +36,8 @@ def submit(request):
         ip = get_client_ip(request)
         message = Message(message_text=escape(post), ip=ip)
         message.save()
+        #return [0]
+    #return JsonResponse([1, "You cannot send a blank message."], safe=False)
     return HttpResponseRedirect(reverse('proapp:index'))
 
 

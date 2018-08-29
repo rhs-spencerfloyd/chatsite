@@ -4,11 +4,8 @@
     </head>
     <body>
         <p id="messages"></p>
-        <form method="post" action="{% url 'proapp:submit' %}">
-            {% csrf_token %}
-           Message <input type="text" maxlength="200" placeholder="Message" name="textbox" />
-           <input type="submit" value="LOL" />
-        </form>
+        Message <input id="messagebox" type="text" maxlength="200" placeholder="Message" name="textbox" />
+        <button onclick="submitForm()">LOL</button>
     </body>
 
     <script>
@@ -54,6 +51,24 @@
             };
             xhr.send();
         };
+
+        function submitForm() {
+            var http = new XMLHttpRequest();
+            http.open("POST", "{% url 'proapp:submit' %}", true);
+            http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            var params = "textbox=" + document.getElementById("messagebox").value + "&csrfmiddlewaretoken={{ csrf_token }}"; 
+            http.send(params);
+            http.onload = function() {
+                //alert(http.responseText);
+            }
+            document.getElementById("messagebox").value = "";
+        }
+
+        document.getElementById('messagebox').onkeydown = function(event) {
+            if (event.keyCode == 13) {
+                submitForm();
+            }
+        }
 
     
     
