@@ -8,4 +8,5 @@ urlpatterns = [
     path('submit', views.submit, name="submit"),
     path('setname', views.setname, name="setname"),
     path('getmessages', views.getmessages, name="getmessages"),
+    path('getstats', views.getstats, name="getstats"),
 ]

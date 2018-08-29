@@ -6,6 +6,8 @@
         <p id="messages"></p>
         Message <input id="messagebox" type="text" maxlength="200" placeholder="Message" name="textbox" />
         <button onclick="submitForm()">LOL</button>
+        <p id="online"></p>
+        <p id="nummessages"></p>
     </body>
 
     <script>
@@ -13,10 +15,17 @@
 
         var html = "";
         var oldhtml = "";
+
+
+        nummessageshtml = "";
+        onlinehtml = "";
+        oldnummessageshtml = "";
+        oldonlinehtml = "";
         
         setInterval(function()
         { 
 
+            // UPDATE MESSAGE FEED
             getJSON('{% url "proapp:getmessages" %}',
             function(err, data) {
             if (err !== null) {
@@ -32,6 +41,32 @@
 
             if (html != oldhtml) {
                 document.getElementById("messages").innerHTML = html;
+            }
+
+
+            // UPDATE STATS FEED
+            getJSON('{% url "proapp:getstats" %}',
+            function(err, data) {
+            if (err !== null) {
+                html = "error";
+            } else {
+                oldnummessageshtml = nummessageshtml;
+                oldonlinehtml = onlinehtml;
+                nummessageshtml = "";
+                onlinehtml = "";
+                nummessageshtml = "Total Messages Sent: <b>" + data.nummessages + "</b>";
+                onlinehtml = "Users Online: ";
+                data.online.forEach(function (userOnline) {
+                    onlinehtml = onlinehtml + userOnline + ", ";
+                });
+            }
+            });
+
+            if (nummessageshtml != oldnummessageshtml) {
+                document.getElementById("nummessages").innerHTML = nummessageshtml;
+            }
+            if (onlinehtml != oldonlinehtml) {
+                document.getElementById("online").innerHTML = onlinehtml;
             }
 
 

@@ -3,8 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
 from html import escape
+from datetime import datetime,timedelta
 
-from .models import Message, IPName
+from .models import Message, IPName, GetRequest
 
 # Create your views here.
 
@@ -61,3 +62,25 @@ def getmessages(request):
         del message["ip"]
         del message["id"]
     return JsonResponse(messlist, safe=False)
+
+
+def getstats(request):
+    ip = get_client_ip(request)
+    getrequest = GetRequest(ip=ip, datetime=datetime.now())
+    getrequest.save()
+
+    # total number of messages
+    nummessages = Message.objects.all().count()
+
+    # users online
+    onlineips = GetRequest.objects.filter(datetime__gt=datetime.now()-timedelta(seconds=5))
+    online = []
+    for oip in onlineips:
+        name = IPName.objects.filter(ip=oip.ip)[0].name
+        if not(name in online):
+            online.append(name)
+
+    # compile statlist
+    statlist = {"nummessages": nummessages, "online": sorted(online)}
+
+    return JsonResponse(statlist, safe=False)

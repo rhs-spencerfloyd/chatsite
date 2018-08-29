@@ -8,3 +8,7 @@ class Message(models.Model):
 class IPName(models.Model):
     ip = models.TextField()
     name = models.TextField()
+
+class GetRequest(models.Model):
+    ip = models.TextField()
+    datetime = models.DateTimeField('datetime')
