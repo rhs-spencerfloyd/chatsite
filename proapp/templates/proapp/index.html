@@ -1,13 +1,46 @@
+{% load static %}
 <html>
     <head>
         <title>Spencer's Website</title>
+
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'proapp/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <p id="messages"></p>
-        Message <input id="messagebox" type="text" maxlength="200" placeholder="Message" name="textbox" />
-        <button onclick="submitForm()">LOL</button>
-        <p id="online"></p>
-        <p id="nummessages"></p>
+
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Chat</span>
+                    <p id="messages"></p>
+                </div>
+                <div class="card-action">
+                    <input id="messagebox" type="text" maxlength="200" placeholder="Message" name="textbox" />
+                </div>
+                </div>
+            </div>
+
+            <div class="col s12 m6">
+                <div class="card orange lighten-4">
+                <div class="card-content">
+                    <span class="card-title">Online</span>
+                    <p id="online"></p>
+                    <p id="nummessages"></p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Logout</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="{% static 'proapp/js/materialize.min.js' %}"></script>
     </body>
 
     <script>
@@ -36,8 +69,11 @@
                 oldhtml = html;
                 html = "";
                 data.messlist.forEach(function (arrayItem) {
-                    html = "<br>" + arrayItem.message_text + html;
+                    //html = "<div id='row'><div class='col s12'>" + arrayItem.message_text + "</div></div>" + html;
+                    //html = "<br>" + arrayItem.message_text + html;
+                    html = "<li class='collection-item'><p>" + arrayItem.message_text + "</p></li>" + html;
                 });
+                html = "<ul class='collection'>" + html + "</ul>";
                 
 
                 // UPDATE STATS FEED
