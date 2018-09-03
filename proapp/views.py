@@ -52,6 +52,8 @@ def setname(request):
 
 
 def getmessages(request):
+
+    # get messages
     messages = Message.objects.all().order_by('-id').values()[:20]
     messlist = list(messages)
     for message in messlist:
@@ -62,10 +64,8 @@ def getmessages(request):
         message["message_text"] = "<b>" + name + "</b>: " + message["message_text"]
         del message["ip"]
         del message["id"]
-    return JsonResponse(messlist, safe=False)
 
-
-def getstats(request):
+    # save request details
     ip = get_client_ip(request)
     getrequest = GetRequest(ip=ip, datetime=timezone.now())
     getrequest.save()
@@ -81,7 +81,7 @@ def getstats(request):
         if not(name in online):
             online.append(name)
 
-    # compile statlist
-    statlist = {"nummessages": nummessages, "online": sorted(online)}
+    # compile returnlist
+    returnlist = {"messlist": messlist, "statlist": {"nummessages": nummessages, "online": sorted(online)}}
 
-    return JsonResponse(statlist, safe=False)
+    return JsonResponse(returnlist, safe=False)

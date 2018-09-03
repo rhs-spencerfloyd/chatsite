@@ -25,16 +25,30 @@
         setInterval(function()
         { 
 
-            // UPDATE MESSAGE FEED
+            
             getJSON('{% url "proapp:getmessages" %}',
             function(err, data) {
             if (err !== null) {
                 html = "error";
             } else {
+
+                // UPDATE MESSAGE FEED
                 oldhtml = html;
                 html = "";
-                data.forEach(function (arrayItem) {
+                data.messlist.forEach(function (arrayItem) {
                     html = "<br>" + arrayItem.message_text + html;
+                });
+                
+
+                // UPDATE STATS FEED
+                oldnummessageshtml = nummessageshtml;
+                oldonlinehtml = onlinehtml;
+                nummessageshtml = "";
+                onlinehtml = "";
+                nummessageshtml = "Total Messages Sent: <b>" + data.statlist.nummessages + "</b>";
+                onlinehtml = "Users Online: ";
+                data.statlist.online.forEach(function (userOnline) {
+                    onlinehtml = onlinehtml + userOnline + ", ";
                 });
             }
             });
@@ -42,26 +56,6 @@
             if (html != oldhtml) {
                 document.getElementById("messages").innerHTML = html;
             }
-
-
-            // UPDATE STATS FEED
-            getJSON('{% url "proapp:getstats" %}',
-            function(err, data) {
-            if (err !== null) {
-                html = "error";
-            } else {
-                oldnummessageshtml = nummessageshtml;
-                oldonlinehtml = onlinehtml;
-                nummessageshtml = "";
-                onlinehtml = "";
-                nummessageshtml = "Total Messages Sent: <b>" + data.nummessages + "</b>";
-                onlinehtml = "Users Online: ";
-                data.online.forEach(function (userOnline) {
-                    onlinehtml = onlinehtml + userOnline + ", ";
-                });
-            }
-            });
-
             if (nummessageshtml != oldnummessageshtml) {
                 document.getElementById("nummessages").innerHTML = nummessageshtml;
             }
