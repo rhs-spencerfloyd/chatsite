@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Chat</span>
-                        <p id="messages"></p>
+                        <p id="messages" style="overflow-y: scroll; height:50%;">
                     </div>
                     <div class="card-action">
                         <input id="messagebox" type="text" maxlength="200" placeholder="Message" name="textbox" />
@@ -72,9 +72,9 @@
                     //html = "<div id='row'><div class='col s12'>" + arrayItem.message_text + "</div></div>" + html;
                     //html = "<br>" + arrayItem.message_text + html;
                     if (arrayItem.me == "true") {
-                        html = "<div class='row'><div class='col s6 offset-s6'><div class='card green'><div class='card-content'>" + arrayItem.message_text + "</div></div></div></div>" + html;
+                        html = "<a class='btn-flat right orange lighten-2'>" + arrayItem.message_text + "</a><br><br>" + html;
                     } else {
-                        html = "<div class='row'><div class='col s6'><div class='card'><div class='card-content'>" + arrayItem.message_text + "</div></div></div></div>" + html;
+                        html = "<a class='btn-flat'>" + arrayItem.message_text + "</a><br><br>" + html;
                     }
                 });
                 html = "" + html + "";
@@ -95,13 +95,17 @@
 
             if (html != oldhtml) {
                 document.getElementById("messages").innerHTML = html;
+                var elem = document.getElementById('messages');
+                elem.scrollTop = elem.scrollHeight;
             }
             if (nummessageshtml != oldnummessageshtml) {
                 document.getElementById("nummessages").innerHTML = nummessageshtml;
+                
             }
             if (onlinehtml != oldonlinehtml) {
                 document.getElementById("online").innerHTML = onlinehtml;
             }
+            
 
 
         }, 500);//time in milliseconds 
