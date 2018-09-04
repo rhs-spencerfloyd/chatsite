@@ -53,22 +53,28 @@ def setname(request):
 
 def getmessages(request):
 
+    # save request details
+    ip = get_client_ip(request)
+    getrequest = GetRequest(ip=ip, datetime=timezone.now())
+    getrequest.save()
+
     # get messages
     messages = Message.objects.all().order_by('-id').values()[:20]
     messlist = list(messages)
     for message in messlist:
         try:
-            name = IPName.objects.filter(ip=message["ip"])[0].name
+            person = IPName.objects.filter(ip=message["ip"])[0]
+            name = person.name
+            if person.ip == ip:
+                message["me"] = "true"
+            else:
+                message["me"] = "false"
         except:
             name = "Unregistered User"
+            message["me"] = "false"
         message["message_text"] = "<b>" + name + "</b>: " + message["message_text"]
         del message["ip"]
         del message["id"]
-
-    # save request details
-    ip = get_client_ip(request)
-    getrequest = GetRequest(ip=ip, datetime=timezone.now())
-    getrequest.save()
 
     # total number of messages
     nummessages = Message.objects.all().count()
@@ -85,3 +91,10 @@ def getmessages(request):
     returnlist = {"messlist": messlist, "statlist": {"nummessages": nummessages, "online": sorted(online)}}
 
     return JsonResponse(returnlist, safe=False)
+
+
+def reseteverything(request):
+    Message.objects.all().delete()
+    IPName.objects.all().delete()
+    GetRequest.objects.all().delete()
+    return HttpResponseRedirect(reverse('proapp:index'))

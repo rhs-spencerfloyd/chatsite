@@ -34,7 +34,7 @@
                         <p id="nummessages"></p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Logout</a>
+                        <a href="{% url 'proapp:reseteverything' %}">NUKE EVERYTHING AND EVERYONE</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,11 @@
                 data.messlist.forEach(function (arrayItem) {
                     //html = "<div id='row'><div class='col s12'>" + arrayItem.message_text + "</div></div>" + html;
                     //html = "<br>" + arrayItem.message_text + html;
-                    html = "<div class='card'><div class='card-content'>" + arrayItem.message_text + "</div></div>" + html;
+                    if (arrayItem.me == "true") {
+                        html = "<div class='row'><div class='col s6 offset-s6'><div class='card green'><div class='card-content'>" + arrayItem.message_text + "</div></div></div></div>" + html;
+                    } else {
+                        html = "<div class='row'><div class='col s6'><div class='card'><div class='card-content'>" + arrayItem.message_text + "</div></div></div></div>" + html;
+                    }
                 });
                 html = "" + html + "";
                 
